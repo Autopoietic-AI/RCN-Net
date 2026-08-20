@@ -1,6 +1,6 @@
 <div align="center">
 
-# Surgical YOLO 4-Channel Classifier
+# RCN-Net
 
 **Cataract surgery phase classification with offline instrument ROI priors, a 4-channel input, and multi-scale co-attention.**
 
