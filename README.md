@@ -1,6 +1,6 @@
 <div align="center">
 
-# RCN-Net
+# RCN-Net: A ROI-Guided Co-Attention Normalization-Free Network for Cataract Surgery Phase Recognition
 
 **Cataract surgery phase classification with offline instrument ROI priors, a 4-channel input, and multi-scale co-attention.**
 
