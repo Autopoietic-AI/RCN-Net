@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="820" viewBox="0 0 1600 820" role="img" aria-labelledby="title desc">
+  <title id="title">How a YOLO bounding box becomes the fourth input channel</title>
+  <desc id="desc">A synthetic surgical frame is associated with an absolute-pixel bounding box, rasterized into a binary mask, and concatenated with red, green, and blue channels to form a four-channel tensor.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbfd"/>
+      <stop offset="1" stop-color="#eaf4f7"/>
+    </linearGradient>
+    <linearGradient id="iris" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#96bfc1"/>
+      <stop offset="0.55" stop-color="#577d83"/>
+      <stop offset="1" stop-color="#304852"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#164056" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#2788a6"/>
+    </marker>
+    <style>
+      .font{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      .kicker{font-size:18px;font-weight:750;letter-spacing:2.2px;fill:#2788a6}
+      .title{font-size:35px;font-weight:780;fill:#102b3a}
+      .heading{font-size:23px;font-weight:750;fill:#17394a}
+      .small{font-size:17px;font-weight:520;fill:#55707d}
+      .tiny{font-size:15px;font-weight:650;fill:#375665}
+      .card{fill:#fff;stroke:#c9dfe8;stroke-width:2}
+      .arrow{fill:none;stroke:#2788a6;stroke-width:4;stroke-linecap:round;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1600" height="820" rx="34" fill="url(#bg)"/>
+  <circle cx="1490" cy="80" r="240" fill="#67d5c0" opacity="0.14"/>
+  <circle cx="90" cy="790" r="220" fill="#6f8bff" opacity="0.09"/>
+
+  <g class="font">
+    <text x="64" y="67" class="kicker">FOUR-CHANNEL INPUT CONTRACT</text>
+    <text x="64" y="114" class="title">RGB carries appearance; a binary ROI carries the instrument prior</text>
+    <text x="64" y="149" class="small">Synthetic illustration · the repository expects precomputed absolute-pixel boxes keyed by image basename</text>
+
+    <!-- Synthetic frame -->
+    <g filter="url(#shadow)">
+      <rect x="64" y="214" width="370" height="430" rx="28" class="card"/>
+      <rect x="86" y="238" width="326" height="272" rx="22" fill="#c59473"/>
+      <ellipse cx="249" cy="374" rx="136" ry="106" fill="#e1b58f"/>
+      <ellipse cx="249" cy="374" rx="91" ry="91" fill="url(#iris)"/>
+      <circle cx="249" cy="374" r="41" fill="#1f3039"/>
+      <circle cx="224" cy="347" r="13" fill="#fff" opacity="0.78"/>
+      <path d="M376 309L284 364" stroke="#e6edf0" stroke-width="16" stroke-linecap="round"/>
+      <path d="M380 307L404 288" stroke="#677f8b" stroke-width="24" stroke-linecap="round"/>
+      <rect x="276" y="289" width="120" height="105" rx="4" fill="none" stroke="#ef5757" stroke-width="6"/>
+      <path d="M276 307v-18h18M378 289h18v18M276 376v18h18M378 394h18v-18" fill="none" stroke="#fff" stroke-width="3"/>
+      <text x="92" y="552" class="heading">1 · Surgical frame</text>
+      <text x="92" y="587" class="small">A detector runs before this code.</text>
+      <text x="92" y="617" class="small">The red box is only an illustration.</text>
+    </g>
+
+    <!-- JSON and mask -->
+    <g filter="url(#shadow)">
+      <rect x="508" y="214" width="350" height="430" rx="28" class="card"/>
+      <rect x="536" y="245" width="294" height="150" rx="18" fill="#0f2635"/>
+      <text x="554" y="276" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#8debd4">"frame_0001.jpg": [</text>
+      <text x="570" y="305" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#d7e8ee">{"x_center": 965,</text>
+      <text x="570" y="331" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#d7e8ee"> "y_center": 530,</text>
+      <text x="570" y="357" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#d7e8ee"> "w": 280, "h": 120}</text>
+      <text x="554" y="383" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#8debd4">]</text>
+      <rect x="585" y="413" width="197" height="118" rx="14" fill="#071219" stroke="#527382" stroke-width="2"/>
+      <rect x="673" y="440" width="83" height="60" rx="3" fill="#fff"/>
+      <text x="536" y="562" class="heading">2 · Rasterize the box</text>
+      <text x="536" y="597" class="small">Inside bbox = 1 · elsewhere = 0</text>
+      <text x="536" y="625" class="tiny">Only the first detection is used.</text>
+    </g>
+
+    <!-- Channel stack -->
+    <g filter="url(#shadow)">
+      <rect x="934" y="214" width="602" height="430" rx="28" class="card"/>
+      <g transform="translate(980 267)">
+        <rect x="210" y="0" width="212" height="202" rx="20" fill="#ef6262" stroke="#c94848" stroke-width="2"/>
+        <text x="390" y="32" font-size="24" font-weight="800" fill="#fff">R</text>
+        <ellipse cx="316" cy="105" rx="70" ry="55" fill="#9f3232" opacity="0.75"/>
+        <rect x="140" y="24" width="212" height="202" rx="20" fill="#56c98b" stroke="#329464" stroke-width="2"/>
+        <text x="320" y="56" font-size="24" font-weight="800" fill="#fff">G</text>
+        <ellipse cx="246" cy="129" rx="70" ry="55" fill="#23754c" opacity="0.72"/>
+        <rect x="70" y="48" width="212" height="202" rx="20" fill="#5f85ea" stroke="#3c62c7" stroke-width="2"/>
+        <text x="250" y="80" font-size="24" font-weight="800" fill="#fff">B</text>
+        <ellipse cx="176" cy="153" rx="70" ry="55" fill="#294894" opacity="0.72"/>
+        <rect x="0" y="72" width="212" height="202" rx="20" fill="#0c1720" stroke="#36bda2" stroke-width="4"/>
+        <rect x="103" y="130" width="72" height="61" rx="4" fill="#7bf2ca"/>
+        <text x="166" y="105" font-size="21" font-weight="800" fill="#7bf2ca">ROI</text>
+      </g>
+      <text x="970" y="562" class="heading">3 · Concatenate along channels</text>
+      <text x="970" y="598" class="small">Output tensor: [4, input_size, input_size]</text>
+      <rect x="1284" y="576" width="211" height="36" rx="18" fill="#d9f5ee"/>
+      <text x="1307" y="600" class="tiny" fill="#267b69">DEFAULT: 4 × 512 × 512</text>
+    </g>
+
+    <path d="M434 426H494" class="arrow"/>
+    <path d="M858 426H920" class="arrow"/>
+
+    <rect x="64" y="692" width="1472" height="76" rx="20" fill="#dcecf2" opacity="0.88"/>
+    <text x="94" y="724" class="tiny">Important:</text>
+    <text x="185" y="724" class="small">coordinates are interpreted in original-image pixels, not normalized YOLO coordinates.</text>
+    <text x="94" y="752" class="small">The JSON lookup uses each image's basename, so basenames should be unique across the dataset.</text>
+  </g>
+</svg>
