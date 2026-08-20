@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Models / data artifacts
+*.pth
+*.pt
+*.ckpt
+*.csv
+*.json
+
+# Local data / logs
+data/
+runs/
+logs/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
